@@ -1,3 +1,7 @@
 node_modules
 .git
-doc/*
+/app/doc/*
+
+npm-debug.*
+
+launch.json
