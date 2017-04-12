@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const fsx = require('fs-extra');
 
 const arch = os.platform();
 
@@ -27,15 +28,18 @@ function convertFile(file) {
     execFile('node', tempFlags, (err, out, stderr) => {
       if (err) console.log(err.stack);
       console.log('Reading file %s', tempFlags[2]);
-      console.log(out);
+      console.log('Creating HTML file: ' + file);
+      let filename = file.slice(0,-3);
+      fs.writeFileSync('../build/' + filename + '.html', out);
+      
     });
   } else if (arch === 'win32') {
     const bat = 'doc.bat';
     const command = bat + flags.join(' ') + file;
     exec(command, (err, out, stderr) => {
       if (err) console.log(err);
-      if (stderr) console.log(stderr);
       console.log('Creating HTML file: ' + file);
+
     });
   }
 }
@@ -53,6 +57,7 @@ function checkFiles() {
   });
 }
 
+// create document directory and copy assets
 fs.stat('../build', (err, out) => {
   if (err) console.log(err);
   if (out) {
@@ -60,18 +65,11 @@ fs.stat('../build', (err, out) => {
   } else {
     console.log('creating build folder');
     fs.mkdirSync('../build');
+    fsx.copy('doc/api_assets', '../build/assets/', (err) => {
+      if (err) return console.error(err);
+      console.log('success!');
+    });
   }
 });
-  
-// fs.mkdir()
-// checkFiles();
 
-// run
-//  check version arg
-//   build docs based on version
-//   place files in specific location held by NODE_API_DOCS
-
-
-
-
-
+checkFiles();
