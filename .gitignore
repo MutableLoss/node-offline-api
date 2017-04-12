@@ -1,6 +1,7 @@
 node_modules
 .git
 
+build
 npm-debug.*
 
 launch.json
