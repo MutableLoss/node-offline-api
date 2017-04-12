@@ -31,7 +31,6 @@ function convertFile(file) {
       console.log('Creating HTML file: ' + file);
       let filename = file.slice(0,-3);
       fs.writeFileSync('../build/' + filename + '.html', out);
-      
     });
   } else if (arch === 'win32') {
     const bat = 'doc.bat';
@@ -62,6 +61,7 @@ fs.stat('../build', (err, out) => {
   if (err) console.log(err);
   if (out) {
     console.log('build folder exists');
+    console.log(out);
   } else {
     console.log('creating build folder');
     fs.mkdirSync('../build');
