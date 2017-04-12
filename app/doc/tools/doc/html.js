@@ -46,7 +46,6 @@ var gtocPath = path.resolve(path.join(
   __dirname,
   '..',
   '..',
-  'doc',
   'api',
   '_toc.md'
 ));
