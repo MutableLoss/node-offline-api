@@ -30,7 +30,9 @@ function convertFile(file) {
       console.log('Reading file %s', tempFlags[2]);
       console.log('Creating HTML file: ' + file);
       let filename = file.slice(0,-3);
-      fs.writeFileSync('../build/' + filename + '.html', out);
+      let pathname = '../build/' + filename + '.html';
+      fs.writeFileSync(pathname, out);
+      console.log(pathname);
     });
   } else if (arch === 'win32') {
     const bat = 'doc.bat';
@@ -59,9 +61,9 @@ function checkFiles() {
 // create document directory and copy assets
 fs.stat('../build', (err, out) => {
   if (err) console.log(err);
+  // console.log(out.isDirectory());
   if (out) {
     console.log('build folder exists');
-    console.log(out);
   } else {
     console.log('creating build folder');
     fs.mkdirSync('../build');
