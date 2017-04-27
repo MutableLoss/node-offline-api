@@ -8,6 +8,7 @@ const arch = os.platform();
 const { exec, execFile } = require('child_process');
 const gen = '/app/doc/tools/generate.js';
 const dir = __dirname + '/doc/api/';
+const buildDir = __dirname.slice(0,-3) + 'build/';
 let count = 0;
 
 console.log('Dir: %s', __dirname);
@@ -30,7 +31,7 @@ function convertFile(file) {
       console.log('Reading file %s', tempFlags[2]);
       console.log('Creating HTML file: ' + file);
       let filename = file.slice(0,-3);
-      let pathname = '../build/' + filename + '.html';
+      let pathname = buildDir + filename + '.html';
       fs.writeFileSync(pathname, out);
       console.log(pathname);
     });
@@ -58,19 +59,29 @@ function checkFiles() {
   });
 }
 
+function copyAssets() {
+  fsx.copy(__dirname + '/doc/api_assets', buildDir + 'assets/', (err) => {
+    if (err) return console.error(err);
+    console.log('Copy success!');
+  });
+}
+
 // create document directory and copy assets
-fs.stat('../build', (err, out) => {
+fs.stat(buildDir, (err, out) => {
   if (err) console.log(err);
   // console.log(out.isDirectory());
   if (out) {
     console.log('build folder exists');
+    fs.stat(buildDir + 'assets', (err, out) => {
+      if (err) {
+        // console.log(err);
+        copyAssets();
+      }
+    });
   } else {
     console.log('creating build folder');
-    fs.mkdirSync('../build');
-    fsx.copy('doc/api_assets', '../build/assets/', (err) => {
-      if (err) return console.error(err);
-      console.log('success!');
-    });
+    fs.mkdirSync(buildDir);
+    copyAssets();
   }
 });
 
