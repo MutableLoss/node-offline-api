@@ -14,7 +14,7 @@ let count = 0;
 console.log('Dir: %s', __dirname);
 
 var child;
-let flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html'];
+let flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html', '', '--maxBuffer=1024*1000'];
 
 if (process.argv[2]) {
   flags.push(' --node-version=' + process.argv[2]);
@@ -24,11 +24,10 @@ function convertFile(file) {
   // take file and generate html file
   if (arch === 'darwin' || arch === 'linux') {
     count++;
-    let tempFlags = flags.slice(0);
-    tempFlags.push(__dirname + '/doc/api/' + file);
-    execFile('node', tempFlags, (err, out, stderr) => {
+    flags[2] = __dirname + '/doc/api/' + file;
+    execFile('node', flags, (err, out, stderr) => {
       if (err) console.log(err.stack);
-      console.log('Reading file %s', tempFlags[2]);
+      console.log('Reading file %s', flags[2]);
       console.log('Creating HTML file: ' + file);
       let filename = file.slice(0,-3);
       let pathname = buildDir + filename + '.html';
@@ -41,7 +40,6 @@ function convertFile(file) {
     exec(command, (err, out, stderr) => {
       if (err) console.log(err);
       console.log('Creating HTML file: ' + file);
-
     });
   }
 }
@@ -74,7 +72,6 @@ fs.stat(buildDir, (err, out) => {
     console.log('build folder exists');
     fs.stat(buildDir + 'assets', (err, out) => {
       if (err) {
-        // console.log(err);
         copyAssets();
       }
     });
