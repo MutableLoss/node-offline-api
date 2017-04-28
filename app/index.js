@@ -31,15 +31,6 @@ options.forEach(function(ops) {
 
 console.log('NODe API: Building to Directory: %s', buildDir);
 
-
-// console.log('options', process.argv);
-
-// if (process.argv[2]) {
-//   if (process.argv[2].startsWith('--')) {
-//     inputFile = arg;
-//    process.argv[2];
-// }
-
 function convertFile(file) {
   // take file and generate html file
   if (arch === 'darwin' || arch === 'linux') {
@@ -55,7 +46,7 @@ function convertFile(file) {
       if (code !== 0) {
         console.log('NODe API: process exited with code ' + code);
       } else {
-        console.log('NODe API: Creating doc: ' + filename);
+        // console.log('NODe API: Creating doc: ' + filename);
       }
     });
   } else if (arch === 'win32') {
