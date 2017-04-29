@@ -1,19 +1,20 @@
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const fsx = require('fs-extra');
-const arch = os.platform();
+var fs = require('fs');
+var path = require('path');
+var os = require('os');
+var fsx = require('fs-extra');
+var arch = os.platform();
 
-const { spawn, exec, execFile } = require('child_process');
-const gen = '/app/doc/tools/generate.js';
-const dir = __dirname + '/doc/api/';
-let buildDir = __dirname.slice(0,-3) + 'build/';
-let count = 0, argCount = 0;
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
+var gen = '/app/doc/tools/generate.js';
+var dir = __dirname + '/doc/api/';
+var buildDir = __dirname.slice(0,-3) + 'build/';
+var count = 0, argCount = 0;
 
 var child;
-let flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html', ''];
+var flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html', ''];
 
-const options = process.argv.slice(2);
+var options = process.argv.slice(2);
 
 // Check for options
 options.forEach(function(ops) {
@@ -23,7 +24,7 @@ options.forEach(function(ops) {
        buildDir += '/';
     }
   } else if (ops.startsWith('-v')) {
-    let version = process.argv[argCount + 3];
+    var version = process.argv[argCount + 3];
     flags[3] = '--node-version=' + version;
   }
   argCount++;
@@ -36,10 +37,10 @@ function convertFile(file) {
   if (arch === 'darwin' || arch === 'linux') {
     count++;
     flags[2] = __dirname + '/doc/api/' + file;
-    let filename = file.slice(0,-3);
-    let pathname = buildDir + filename + '.html';
-    const fileStream = fs.createWriteStream(pathname);
-    const createFile = spawn('node', flags);
+    var filename = file.slice(0,-3);
+    var pathname = buildDir + filename + '.html';
+    var fileStream = fs.createWriteStream(pathname);
+    var createFile = spawn('node', flags);
 
     createFile.stdout.pipe(fileStream);
     createFile.on('close', (code) => {
@@ -50,8 +51,8 @@ function convertFile(file) {
       }
     });
   } else if (arch === 'win32') {
-    const bat = 'doc.bat';
-    const command = bat + flags.join(' ') + file;
+    var bat = 'doc.bat';
+    var command = bat + flags.join(' ') + file;
     exec(command, (err, out, stderr) => {
       if (err) console.log(err);
       console.log('NODe API: Creating HTML file: ' + file);
