@@ -25,7 +25,7 @@
     "url": "git+https://github.com/3DEsprit/node-offline-api.git"
   },
   "author": "dbrown",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/3DEsprit/node-offline-api/issues"
   },
