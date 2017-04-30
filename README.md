@@ -48,7 +48,7 @@ $ npm i
 _or_
 
 ```
-yarn install
+$ yarn install
 ```
 
 ```
