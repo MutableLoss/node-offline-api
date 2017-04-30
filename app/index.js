@@ -7,31 +7,53 @@ var arch = os.platform();
 var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
 var gen = '/app/doc/tools/generate.js';
-var dir = __dirname + '/doc/api/';
-var buildDir = __dirname.slice(0,-3) + 'node-documents/';
+var apiDir = __dirname + '/doc/api/';
+
 var count = 0, argCount = 0;
 
 var child;
 var flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html', ''];
 
+var buildOptions = {
+  buildDir: __dirname.slice(0,-3),
+  buildVersion: os.version
+}
+
 var options = process.argv.slice(2);
 
-// Check for options
-options.forEach(function(ops) {
-  if (ops.startsWith('-v')) {
-    var version = process.argv[argCount + 3];
-    flags[3] = '--node-version=' + version;
-  } else if (ops.startsWith('-f')) {
-    buildDir = process.argv[argCount + 3];
-    if (buildDir.slice(-1) !== '/') {
-       buildDir += '/';
+// check for command line scripting options
+if(options[0] !== '') {
+  options.forEach(function(ops) {
+    if (ops.startsWith('-v')) {
+      var version = process.argv[argCount + 3];
+      flags[3] = '--node-version=' + version;
+    } else if (ops.startsWith('-f')) {
+      buildDir = process.argv[argCount + 3];
+      if (buildDir.slice(-1) !== '/') {
+        buildDir += '/';
+      }
+      buildOptions.buildDir = buildDir + 'node-documents/';
     }
-    buildDir += 'node-documents/';
+    argCount++;
+  });
+}
+
+
+// Check for modular options
+buildOptions.forEach(function(ops) {
+  if (ops === 'buildVersion') {
+    var version = buildOptions.buildVersion;
+    flags[3] = '--node-version=' + version;
+  } else if (ops === 'buildDir') {
+    if (buildOptions.buildDir.slice(-1) !== '/') {
+       buildOptions.buildDir += '/';
+    }
+    buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + '/';
   }
   argCount++;
 });
 
-console.log('NODe API: Building to Directory: %s', buildDir);
+console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
 
 function convertFile(file) {
   // take file and generate html file
@@ -39,7 +61,7 @@ function convertFile(file) {
     count++;
     flags[2] = __dirname + '/doc/api/' + file;
     var filename = file.slice(0,-3);
-    var pathname = buildDir + filename + '.html';
+    var pathname = buildOptions.buildDir + filename + '.html';
     var fileStream = fs.createWriteStream(pathname);
     var createFile = spawn('node', flags);
 
@@ -47,8 +69,6 @@ function convertFile(file) {
     createFile.on('close', (code) => {
       if (code !== 0) {
         console.log('NODe API: process exited with code ' + code);
-      } else {
-        // console.log('NODe API: Creating doc: ' + filename);
       }
     });
   } else if (arch === 'win32') {
@@ -63,7 +83,7 @@ function convertFile(file) {
 
 // grab template file and assets
 function checkFiles() {
-  fs.readdir(dir, function(err, res) {
+  fs.readdir(apiDir, function(err, res) {
     var ext = path.extname('*.md');
     if (err) console.error(err.stack);
     res.forEach((file) => {
@@ -75,26 +95,34 @@ function checkFiles() {
 }
 
 function copyAssets() {
-  fsx.copy(__dirname + '/doc/api_assets', buildDir + 'assets/', (err) => {
+  fsx.copy(__dirname + '/doc/api_assets', buildOptions.buildDir + 'assets/', function(err) {
     if (err) return console.error('copy', err);
-    console.log('NODe API: Copy success!');
+    console.log('NODe: asset copy success');
   });
 }
 
 // create document directory and copy assets
-fs.stat(buildDir, (err, out) => {
+fs.stat(buildOptions.buildDir, function(err, out) {
   if (out) {
     console.log('NODe API: build folder exists');
-    fs.stat(buildDir + 'assets', (err, out) => {
+    fs.stat(buildOptions.buildDir + 'assets', function(err, out) {
       if (err) {
         copyAssets();
       }
     });
   } else {
     console.log('NODe API: creating build folder');
-    fs.mkdirSync(buildDir);
+    fs.mkdirSync(buildOptions.buildDir);
     copyAssets();
   }
 });
 
-checkFiles();
+function createDocs() {
+  checkFiles();
+}
+
+module.exports = {
+  createDocs: createDocs,
+  buildOptions: buildOptions,
+  documentPath: buildOptions.buildDir
+}
