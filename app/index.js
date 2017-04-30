@@ -25,18 +25,19 @@ var options = process.argv.slice(2);
 if(options[0] !== '') {
   options.forEach(function(ops, index) {
     if (ops.startsWith('-v')) {
-      var version = process.argv[index + 1];
+      var version = options[index + 1];
       flags[3] = '--node-version=' + version;
     } else if (ops.startsWith('-f')) {
-      buildDir = process.argv[index + 1];
+      buildDir = options[index + 1];
       if (buildDir.slice(-1) !== '/') {
         buildDir += '/';
       }
-      buildOptions.buildDir = buildDir + 'node-documents/';
+      buildOptions.buildDir = buildDir;
     }
 
     if (index === options.length) {
-      checkOptions();
+      buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + '/';
+      checkFolders();
     }
   });
 }
