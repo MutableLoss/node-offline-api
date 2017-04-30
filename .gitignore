@@ -2,8 +2,10 @@ node_modules
 .git
 
 build
-node-document
+node-documents*
 npm-debug.*
+
+test/
 
 launch.json
 
