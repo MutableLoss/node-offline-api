@@ -8,7 +8,7 @@ var spawn = require('child_process').spawn;
 var exec = require('child_process').exec;
 var gen = '/app/doc/tools/generate.js';
 var dir = __dirname + '/doc/api/';
-var buildDir = __dirname.slice(0,-3) + 'build/';
+var buildDir = __dirname.slice(0,-3) + 'node-documents/';
 var count = 0, argCount = 0;
 
 var child;
@@ -18,14 +18,15 @@ var options = process.argv.slice(2);
 
 // Check for options
 options.forEach(function(ops) {
-  if (ops.startsWith('-f')) {
-    buildDir = process.argv[argCount + 3];
-    if(buildDir.slice(-1) !== '/') {
-       buildDir += '/';
-    }
-  } else if (ops.startsWith('-v')) {
+  if (ops.startsWith('-v')) {
     var version = process.argv[argCount + 3];
     flags[3] = '--node-version=' + version;
+  } else if (ops.startsWith('-f')) {
+    buildDir = process.argv[argCount + 3];
+    if (buildDir.slice(-1) !== '/') {
+       buildDir += '/';
+    }
+    buildDir += 'node-documents/';
   }
   argCount++;
 });
