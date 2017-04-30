@@ -5,6 +5,8 @@ build
 node-documents*
 npm-debug.*
 
+test/
+
 launch.json
 
 dockerfile
