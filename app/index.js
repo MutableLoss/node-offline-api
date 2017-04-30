@@ -16,7 +16,7 @@ var flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname
 
 var buildOptions = {
   buildDir: __dirname.slice(0,-3),
-  buildVersion: os.version
+  buildVersion: process.version
 }
 
 var options = process.argv.slice(2);
@@ -40,20 +40,6 @@ if(options[0] !== '') {
 
 
 // Check for modular options
-buildOptions.forEach(function(ops) {
-  if (ops === 'buildVersion') {
-    var version = buildOptions.buildVersion;
-    flags[3] = '--node-version=' + version;
-  } else if (ops === 'buildDir') {
-    if (buildOptions.buildDir.slice(-1) !== '/') {
-       buildOptions.buildDir += '/';
-    }
-    buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + '/';
-  }
-  argCount++;
-});
-
-console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
 
 function convertFile(file) {
   // take file and generate html file
@@ -99,26 +85,49 @@ function copyAssets() {
     if (err) return console.error('copy', err);
     console.log('NODe: asset copy success');
   });
+  checkFiles();
 }
 
 // create document directory and copy assets
-fs.stat(buildOptions.buildDir, function(err, out) {
-  if (out) {
-    console.log('NODe API: build folder exists');
-    fs.stat(buildOptions.buildDir + 'assets', function(err, out) {
-      if (err) {
-        copyAssets();
-      }
-    });
-  } else {
-    console.log('NODe API: creating build folder');
-    fs.mkdirSync(buildOptions.buildDir);
-    copyAssets();
+function checkFolders() {
+  fs.stat(buildOptions.buildDir, function(err, out) {
+    if (out) {
+      console.log('NODe API: build folder exists');
+      fs.stat(buildOptions.buildDir + 'assets', function(err, out) {
+        if (err) {
+          copyAssets();
+        }
+      });
+    } else {
+      console.log('NODe API: creating build folder');
+      fs.mkdirSync(buildOptions.buildDir);
+      copyAssets();
+    }
+  });
+}
+
+function checkOptions() {
+  if (buildOptions.buildVersion !== os.version) {
+    var version = buildOptions.buildVersion;
+    flags[3] = '--node-version=' + version;
   }
-});
+
+  if(buildOptions.buildDir.slice(0,1)) {
+    buildOptions.buildDir = buildOptions.buildDir.replace(/^~/, os.homedir);
+  }
+
+  if (buildOptions.buildDir.slice(-1) !== '/') {
+      buildOptions.buildDir += '/';
+  }
+  console.log('ver: ' + process.version);
+  buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + '/';
+
+  console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
+  checkFolders();
+}
 
 function createDocs() {
-  checkFiles();
+  checkOptions();
 }
 
 module.exports = {
