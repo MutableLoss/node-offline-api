@@ -1,7 +1,7 @@
 {
   "name": "node-offline-api",
   "description": "Node API Document Creator",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "main": "app/index.js",
   "directories": {
     "app": "app"
