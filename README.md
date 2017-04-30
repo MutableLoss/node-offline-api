@@ -35,4 +35,6 @@ $ node app/ -f _folder_
 
 ## License
 
-The Node Offline Doucmentation API is under the MIT license. All contents of the app/doc folder are property of the Node.js project.
+The Node Offline Doucmentation API is under the MIT license. 
+
+The Node.js Document API is property of the [Node.js Project](https://github.com/nodejs/node). [Node.js License](https://github.com/nodejs/node/blob/master/LICENSE)
