@@ -9,7 +9,7 @@ var exec = require('child_process').exec;
 var gen = '/app/doc/tools/generate.js';
 var apiDir = __dirname + '/doc/api/';
 
-var count = 0, argCount = 0;
+var count = 0;
 
 var child;
 var flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname + '/doc/template.html', ''];
@@ -23,18 +23,21 @@ var options = process.argv.slice(2);
 
 // check for command line scripting options
 if(options[0] !== '') {
-  options.forEach(function(ops) {
+  options.forEach(function(ops, index) {
     if (ops.startsWith('-v')) {
-      var version = process.argv[argCount + 3];
+      var version = process.argv[index + 1];
       flags[3] = '--node-version=' + version;
     } else if (ops.startsWith('-f')) {
-      buildDir = process.argv[argCount + 3];
+      buildDir = process.argv[index + 1];
       if (buildDir.slice(-1) !== '/') {
         buildDir += '/';
       }
       buildOptions.buildDir = buildDir + 'node-documents/';
     }
-    argCount++;
+
+    if (index === options.length) {
+      checkOptions();
+    }
   });
 }
 
