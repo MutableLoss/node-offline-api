@@ -16,7 +16,7 @@ var flags = [__dirname + '/doc/tools/doc/generate.js', '--template=' + __dirname
 
 var buildOptions = {
   buildDir: __dirname.slice(0,-3),
-  buildVersion: process.version
+  buildVersion: process.version.slice(1)
 }
 
 var options = process.argv.slice(2);
@@ -119,7 +119,6 @@ function checkOptions() {
   if (buildOptions.buildDir.slice(-1) !== '/') {
       buildOptions.buildDir += '/';
   }
-  console.log('ver: ' + process.version);
   buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + '/';
 
   console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
