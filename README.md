@@ -42,8 +42,16 @@ You can also use NODe as your own script simply to pull and create Node.js docum
 After cloning the repository: https://github.com/3DEsprit/node-offline-api.git
 
 ```
-$ npm i _or_ 'yarn install'
+$ npm i 
+```
 
+_or_
+
+```
+yarn install
+```
+
+```
 $ npm start
 ```
 
@@ -56,14 +64,14 @@ You will find the documentation built within the ./node-documents folder within 
 By default the NODe API will create documentation based on version of node executing the script, but users can explicitly set the version to create when executing the  module using the _-v_ flag:
 
 ```
-$ node app/ -v _version number_
+$ node app/ -v [version number]
 ```
 
 
 Without this option, the NODe API will build the documentation into the build directory within the NODe folder itself. To build the documents into a specific folder, you can instead use the _-f_ flag followed by the specified folder:
 
 ```
-$ node app/ -f _folder_
+$ node app/ -f [folder]
 ```
 
 
