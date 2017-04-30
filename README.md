@@ -5,14 +5,14 @@ The Node.js Offline Document API (NODe API) module allows anyone to create an of
 
 ## Usage
 
-After cloning the repository
+After cloning the repository: https://github.com/3DEsprit/node-offline-api.git
 
 $ npm i _or_ 'yarn install'
 
 $ npm start
 
 
-You will find the documentation within the ./node-documents folder within the NODe API folder.
+You will find the documentation built within the ./node-documents folder within the NODe API folder, and created for the version of node used to execute the script.
 
 
 ## Various Options
