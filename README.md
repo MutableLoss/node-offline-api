@@ -15,7 +15,7 @@ $ npm start
 You will find the documentation built within the ./node-documents folder within the NODe API folder, and created for the version of node used to execute the script.
 
 
-## Various Options
+## Other Options
 
 There are few options you can use with this script, but you will need to run it through node manually.
 
