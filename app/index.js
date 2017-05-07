@@ -5,8 +5,6 @@ var fsx = require('fs-extra');
 var arch = os.platform();
 
 var spawn = require('child_process').spawn;
-var exec = require('child_process').exec;
-var gen = '/app/doc/tools/generate.js';
 var apiDir, apiAssets, flags;
 
 if(arch === 'win32') {
@@ -45,7 +43,6 @@ if(options[0] !== '') {
       }
       buildOptions.buildDir = buildDir + 'node-documents';
     }
-
     if (index === options.length) {
       checkOptions();
     }
@@ -58,7 +55,7 @@ function convertFile(file) {
   count++;
   flags[2] = apiDir + file;
   var filename = file.slice(0,-3);
-  console.log('Creating file ' + filename);
+  console.log('Creating doc ' + filename);
   var pathname = buildOptions.buildDir + filename + '.html';
   var fileStream = fs.createWriteStream(pathname);
   var createFile = spawn('node', flags);
@@ -68,12 +65,7 @@ function convertFile(file) {
       console.log('NODe API: process exited with code ' + code);
     }
   });
-  // var bat = 'doc.bat';
-  // var command = bat + flags.join(' ') + file;
-  // exec(command, (err, out, stderr) => {
-  //   if (err) console.log(err);
-  //   console.log('NODe API: Creating HTML file: ' + file);
-  // });
+  createFile.on('error', (err) => console.log('Error writing: ', err));
 }
 
 // grab template file and assets
