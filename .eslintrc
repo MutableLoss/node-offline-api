@@ -8,15 +8,11 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    
   ],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended"],
   "settings": {
-    "react": {
-      "createClass": "createClass",
-      "pragma": "React",
-      "version": "15.0"
-    }
+    
   },
   "rules": {
     "no-console": 0,
@@ -27,8 +23,6 @@
     "no-undef": 0,
     "eol-last": 0,
     "quotes": [2, "single"],
-    "jsx-quotes": 1,
-    "react/no-unused-prop-types": 1,
-    "react/prop-types": 1
+    "jsx-quotes": 1
   }
 }
