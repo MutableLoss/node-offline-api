@@ -6,7 +6,7 @@ var buildOptions = require('../app/index.js').buildOptions;
 // buildOptions.buildDir = '~/';
 
 describe('node-offline-api', () => {
-  it('should create files', async () => {
+  it('should create files', () => {
     var createDocs = require('../app/index').createDocs;
     const build = fs.statSync(buildOptions.buildDir);
     expect(build).to.satisfy;
