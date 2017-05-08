@@ -25,6 +25,7 @@
     "chai": "3.5.0",
     "commitizen": "2.9.6",
     "cz-conventional-changelog": "2.0.0",
+    "ghooks": "2.0.0",
     "mocha": "3.3.0",
     "semantic-release": "^6.3.6"
   },
@@ -39,6 +40,9 @@
   },
   "homepage": "https://github.com/3DEsprit/node-offline-api#readme",
   "config": {
+    "ghooks": {
+      "pre-commit": "npm test"
+    },
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
