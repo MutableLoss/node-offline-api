@@ -4,9 +4,11 @@
   "version": "0.0.0-development",
   "main": "app/index.js",
   "scripts": {
-    "commit": "git-cz",
-    "test": "mocha test/module.test.js",
     "start": "node app/index.js",
+    "test": "istanbul cover _mocha -- -R spec test/module.test.js",
+    "commit": "git-cz",
+    "check-coverage": "istanbul check-coverage --statements 75 --branches 40 --functions 80 --lines 75",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "directories": {
@@ -23,9 +25,11 @@
   },
   "devDependencies": {
     "chai": "3.5.0",
+    "codecov.io": "0.1.6",
     "commitizen": "2.9.6",
     "cz-conventional-changelog": "2.0.0",
     "ghooks": "2.0.0",
+    "istanbul": "0.4.5",
     "mocha": "3.3.0",
     "semantic-release": "^6.3.6"
   },
@@ -41,7 +45,7 @@
   "homepage": "https://github.com/3DEsprit/node-offline-api#readme",
   "config": {
     "ghooks": {
-      "pre-commit": "npm test"
+      "pre-commit": "npm test && npm run check-coverage"
     },
     "commitizen": {
       "path": "cz-conventional-changelog"
