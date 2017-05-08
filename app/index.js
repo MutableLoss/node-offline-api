@@ -29,21 +29,25 @@ var buildOptions = {
 }
 
 var options = process.argv.slice(2);
+console.log(options);
 
 // check for command line scripting options
-if(options[0] !== '') {
+if(options[0] !== []) {
   options.forEach(function(ops, index) {
+    console.log(ops);
     if (ops.startsWith('-v')) {
-      var version = process.argv[index + 1];
+      var version = options[index + 1];
+      buildOptions.buildVersion = version;
       flags[3] = '--node-version=' + version;
     } else if (ops.startsWith('-f')) {
-      buildDir = process.argv[index + 1];
+      buildDir = options[index + 1];
       if (buildDir.slice(-1) !== docEnd) {
         buildDir += docEnd;
       }
       buildOptions.buildDir = buildDir + 'node-documents';
+      console.log('Custom build dir: ', buildOptions.buildDir);
     }
-    if (index === options.length) {
+    if (index === options.length - 1) {
       checkOptions();
     }
   });
@@ -108,10 +112,9 @@ function checkFolders() {
 }
 
 function checkOptions() {
-  if (buildOptions.buildVersion !== os.version) {
-    var version = buildOptions.buildVersion;
-    flags[3] = '--node-version=' + version;
-  }
+  console.log(buildOptions.buildVersion);
+  var version = buildOptions.buildVersion;
+  flags[3] = '--node-version=' + version;
 
   if(buildOptions.buildDir.slice(0,1)) {
     buildOptions.buildDir = buildOptions.buildDir.replace(/^~/, os.homedir);
