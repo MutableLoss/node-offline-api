@@ -1,5 +1,13 @@
 # Node.js offline document API
 
+[![npm version](https://badge.fury.io/js/node-offline-api.svg?style=flat-square)](https://badge.fury.io/js/node-offline-api)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/)
+[![Build Status](https://travis-ci.org/3DEsprit/node-offline-api.svg?branch=master)](https://travis-ci.org/3DEsprit/node-offline-api)
+[![codecov](https://codecov.io/gh/3DEsprit/node-offline-api/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
+[![dependencies](https://img.shields.io/david/expressjs/express.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
+[![dev-dependencies](https://img.shields.io/david/dev/expressjs/express.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
 The Node.js Offline Document API (NODe API) module allows anyone to create an offline version of the Node.js documentation.
 
 ## Requirements
