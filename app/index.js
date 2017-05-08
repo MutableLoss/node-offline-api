@@ -24,7 +24,7 @@ var count = 0;
 var child;
 
 var buildOptions = {
-  buildDir: __dirname.slice(0,-3),
+  buildDir: process.cwd(),
   buildVersion: process.version.slice(1)
 }
 
