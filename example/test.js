@@ -9,7 +9,8 @@ var buildOptions = require('../app/index.js').buildOptions;
 // buildOptions.buildDir = '~\\My Documents'
 
 // Test version change
-buildOptions.buildVersion = '4.4.0'
-buildOptions.buildName = 'apidoc'
+buildOptions.buildVersion = '4.4.0';
+buildOptions.buildName = 'apidoc';
+buildOptions.buildQuiet = true;
 
 createDocs();

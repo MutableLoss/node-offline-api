@@ -26,31 +26,25 @@ var child;
 var buildOptions = {
   buildDir: process.cwd(),
   buildVersion: process.version.slice(1),
-  buildName: 'node-documents'
+  buildName: 'node-documents',
+  buildQuiet: false,
 }
 
 var options = process.argv.slice(2);
-console.log(options);
 
 // check for command line scripting options
 if(options[0] !== []) {
   options.forEach(function(ops, index) {
-    console.log(ops);
     if (ops.startsWith('-v')) {
-      var version = options[index + 1];
-      buildOptions.buildVersion = version;
+      buildOptions.buildVersion = options[index + 1];
       flags[3] = '--node-version=' + version;
     } else if (ops.startsWith('-f')) {
       buildDir = options[index + 1];
-      if (buildDir.slice(-1) !== docEnd) {
-        buildDir += docEnd;
-      }
+      if (buildDir.slice(-1) !== docEnd) { buildDir += docEnd; }
       buildOptions.buildDir = buildDir + buildOptions.buildName;
-      console.log('Custom build dir: ', buildOptions.buildDir);
+      if (!buildOptions.buildQuiet) console.log('Custom build dir: ', buildOptions.buildDir);
     }
-    if (index === options.length - 1) {
-      checkOptions();
-    }
+    if (index === options.length - 1) { checkOptions(); }
   });
 }
 
@@ -60,36 +54,32 @@ function convertFile(file) {
   count++;
   flags[2] = apiDir + file;
   var filename = file.slice(0,-3);
-  console.log('Creating doc ' + filename);
+  if (!buildOptions.buildQuiet) console.log('Creating doc ' + filename);
   var pathname = buildOptions.buildDir + filename + '.html';
   var fileStream = fs.createWriteStream(pathname);
   var createFile = spawn('node', flags);
   createFile.stdout.pipe(fileStream);
   createFile.on('close', (code) => {
-    if (code !== 0) {
-      console.log('NODe API: process exited with code ' + code);
-    }
+    if (code !== 0) { if (!buildOptions.buildQuiet) console.log('NODe API: process exited with code ' + code); }
   });
-  createFile.on('error', (err) => console.log('Error writing: ', err));
+  createFile.on('error', (err) => console.error('Error writing: ', err));
 }
 
 // grab template file and assets
 function checkFiles() {
   fs.readdir(apiDir, function(err, res) {
     var ext = path.extname('*.md');
-    if (err) console.error(err.stack);
+    if (err) { console.error(err.stack); }
     res.forEach((file) => {
-      if (path.extname(file) === ext) {
-         convertFile(file);
-      }
+      if (path.extname(file) === ext) { convertFile(file); }
     });
   });
 }
 
 function copyAssets() {
   fsx.copy(apiAssets, buildOptions.buildDir + 'assets', function(err) {
-    if (err) return console.error('copy', err);
-    console.log('NODe: asset copy success');
+    if (err) { return console.error('copy', err); }
+    if (!buildOptions.buildQuiet) { console.log('NODe: asset copy success'); }
   });
   checkFiles();
 }
@@ -98,14 +88,12 @@ function copyAssets() {
 function checkFolders() {
   fs.stat(buildOptions.buildDir, function(err, out) {
     if (out) {
-      console.log('NODe API: build folder exists');
+      if (!buildOptions.buildQuiet) console.log('NODe API: build folder exists');
       fs.stat(buildOptions.buildDir + 'assets', function(err, out) {
-        if (err) {
-          copyAssets();
-        }
+        if (err) { copyAssets(); }
       });
     } else {
-      console.log('NODe API: creating build folder');
+      if (!buildOptions.buildQuiet) console.log('NODe API: creating build folder');
       fs.mkdirSync(buildOptions.buildDir);
       copyAssets();
     }
@@ -113,19 +101,11 @@ function checkFolders() {
 }
 
 function checkOptions() {
-  console.log(buildOptions.buildVersion);
-  var version = buildOptions.buildVersion;
-  flags[3] = '--node-version=' + version;
-
-  if(buildOptions.buildDir.slice(0,1)) {
-    buildOptions.buildDir = buildOptions.buildDir.replace(/^~/, os.homedir);
-  }
-
-  if (buildOptions.buildDir.slice(-1) !== docEnd) {
-      buildOptions.buildDir += docEnd;
-  }
+  flags[3] = '--node-version=' + buildOptions.buildVersion;
+  if(buildOptions.buildDir.slice(0,1)) { buildOptions.buildDir = buildOptions.buildDir.replace(/^~/, os.homedir); }
+  if (buildOptions.buildDir.slice(-1) !== docEnd) { buildOptions.buildDir += docEnd; }
   buildOptions.buildDir += buildOptions.buildName + docEnd;
-  console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
+  if (!buildOptions.buildQuiet) { console.log('NODe API: Building to Directory: %s', buildOptions.buildDir); }
   checkFolders();
 }
 

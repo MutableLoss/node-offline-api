@@ -5,18 +5,45 @@
 [![Build Status](https://travis-ci.org/3DEsprit/node-offline-api.svg?branch=master)](https://travis-ci.org/3DEsprit/node-offline-api)
 [![codecov](https://codecov.io/gh/3DEsprit/node-offline-api/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
 [![dependencies](https://img.shields.io/david/expressjs/express.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
-[![dev-dependencies](https://img.shields.io/david/dev/expressjs/express.svg?style=flat-square)](https://codecov.io/gh/3DEsprit/node-offline-api)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
-The Node.js Offline Document API (NODe API) module allows anyone to create an offline version of the Node.js documentation.
+
+The Node.js Offline Document API (NODe API) module allows anyone to create an offline version of the Node.js documentation for any version of Node.js.
 
 ## Requirements
 
-This module has been created to work with Node.js versions greater than 4.0.0, but many older versions will work, but it has not been tested or created to support these older versions.
+While you can create documentation for any version of Node.js, this module has been created versions greater than 4.0.0 in mind. Since it has been created with ES5 for compatibility, older versions will work, but it has not been tested or created to support these older versions.
+
+
+### Installation
+
+You can clone this repository, or install via NPM.
+
+*Via Source*
+
+```
+$ git clone https://github.com/3DEsprit/node-offline-api.git
+
+$ npm i 
+```
+
+*Via NPM*
+
+```
+$ npm i node-offline-api
+```
+
+_or_
+
+```
+$ yarn add node-offline-api
+```
+
 
 ## Usage
 
 There are two different ways to use the NODe API, through the CLI, and as an added module to your Node.js applications.
+
+
 
 ### As a module in your JavaScript code
 
@@ -42,21 +69,16 @@ buildOptions.version: '4.4.0';
 createDocs();
 ```
 
+By default the build can be quite verbose when creating the documents. If you would prefer that the builds be silent, the buildQuiet option is offered allowing the build to complete silently, except when actual errors occur.
+
+```
+buildOptions.buildQuiet: true
+```
+
+
 ### As a Script
 
 You can also use NODe as your own script simply to pull and create Node.js documentation. 
-
-After cloning the repository: https://github.com/3DEsprit/node-offline-api.git
-
-```
-$ npm i 
-```
-
-_or_
-
-```
-$ yarn install
-```
 
 ```
 $ npm start
@@ -84,6 +106,6 @@ $ node app/ -f [folder]
 
 ## License
 
-The Node Offline Doucmentation API is under the MIT license. 
+The Node Offline Doucmentation API has been written with the [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](). 
 
 The Node.js Document API is property of the [Node.js Project](https://github.com/nodejs/node). [Node.js License](https://github.com/nodejs/node/blob/master/LICENSE)
