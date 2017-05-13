@@ -28,17 +28,16 @@ var createDocs = require('node-offline-api').createDocs;
 createDocs();
 ```
 
-Calling this method will build the documents to the _node-documents-<version number>_.
+Run the createDocs method will build the documents to the _buildDir_ in the folder _buildName_ based on the default _buildVersion_. By default the build directory is in the root of the _running environment directory_, with the build folder name of _node-documents_ with the version set to match the version of node running the method. 
 
-If you need to change the desired build directory, or build version, you can change the buildOptions object to do exactly this.
+If you need to change the desired build directory, build folder name, or build version you can change the buildOptions object to do exactly this.
 
 ```
 var buildOptions = require('node-offline-api').buildOptions;
 
-buildOptions = {
-  buildDir: '/Users/username/Documents',
-  version: '4.4.0'
-}
+buildOptions.buildDir: '/Users/username/Documents';
+buildOptions.buildName: 'MyAPIDocs';
+buildOptions.version: '4.4.0';
 
 createDocs();
 ```
