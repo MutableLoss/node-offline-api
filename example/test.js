@@ -10,5 +10,6 @@ var buildOptions = require('../app/index.js').buildOptions;
 
 // Test version change
 buildOptions.buildVersion = '4.4.0'
+buildOptions.buildName = 'apidoc'
 
 createDocs();

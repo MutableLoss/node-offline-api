@@ -25,7 +25,8 @@ var child;
 
 var buildOptions = {
   buildDir: process.cwd(),
-  buildVersion: process.version.slice(1)
+  buildVersion: process.version.slice(1),
+  buildName: 'node-documents'
 }
 
 var options = process.argv.slice(2);
@@ -44,7 +45,7 @@ if(options[0] !== []) {
       if (buildDir.slice(-1) !== docEnd) {
         buildDir += docEnd;
       }
-      buildOptions.buildDir = buildDir + 'node-documents';
+      buildOptions.buildDir = buildDir + buildOptions.buildName;
       console.log('Custom build dir: ', buildOptions.buildDir);
     }
     if (index === options.length - 1) {
@@ -123,7 +124,7 @@ function checkOptions() {
   if (buildOptions.buildDir.slice(-1) !== docEnd) {
       buildOptions.buildDir += docEnd;
   }
-  buildOptions.buildDir += 'node-documents-' + buildOptions.buildVersion + docEnd;
+  buildOptions.buildDir += buildOptions.buildName + docEnd;
   console.log('NODe API: Building to Directory: %s', buildOptions.buildDir);
   checkFolders();
 }
