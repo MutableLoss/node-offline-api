@@ -13,4 +13,7 @@ buildOptions.buildVersion = '4.4.0';
 buildOptions.buildName = 'apidoc';
 buildOptions.buildQuiet = true;
 
+// Use this to overwrite existing API documents
+// buildOptions.updateApi = true;
+
 createDocs();

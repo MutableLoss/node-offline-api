@@ -28,6 +28,7 @@ var buildOptions = {
   buildVersion: process.version.slice(1),
   buildName: 'node-documents',
   buildQuiet: false,
+  updateApi: false
 }
 
 var options = process.argv.slice(2);
@@ -56,7 +57,7 @@ function convertFile(file) {
   var filename = file.slice(0,-3);
   if (!buildOptions.buildQuiet) console.log('Creating doc ' + filename);
   var pathname = buildOptions.buildDir + filename + '.html';
-  var fileStream = fs.createWriteStream(pathname);
+  var fileStream = fs.createWriteStream(pathname, {flag: 'w'});
   var createFile = spawn('node', flags);
   createFile.stdout.pipe(fileStream);
   createFile.on('close', (code) => {
@@ -88,9 +89,9 @@ function copyAssets() {
 function checkFolders() {
   fs.stat(buildOptions.buildDir, function(err, out) {
     if (out) {
-      if (!buildOptions.buildQuiet) console.log('NODe API: build folder exists');
-      fs.stat(buildOptions.buildDir + 'assets', function(err, out) {
+      fs.stat(buildOptions.buildDir + 'assets', function(err, out) { 
         if (err) { copyAssets(); }
+        if (buildOptions.updateApi) { copyAssets(); }
       });
     } else {
       if (!buildOptions.buildQuiet) console.log('NODe API: creating build folder');
