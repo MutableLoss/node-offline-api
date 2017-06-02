@@ -28,7 +28,7 @@ var buildOptions = {
   buildVersion: process.version.slice(1),
   buildName: 'node-documents',
   buildQuiet: false,
-  updateApi: false
+  updateApi: true
 }
 
 var options = process.argv.slice(2);
@@ -61,7 +61,7 @@ function convertFile(file) {
   var createFile = spawn('node', flags);
   createFile.stdout.pipe(fileStream);
   createFile.on('close', (code) => {
-    if (code !== 0) { if (!buildOptions.buildQuiet) console.log('NODe API: process exited with code ' + code); }
+    if (code !== 0 && !buildOptions.buildQuiet) { console.log('NODe API: process exited with code ' + code); }
   });
   createFile.on('error', (err) => console.error('Error writing: ', err));
 }
@@ -90,8 +90,7 @@ function checkFolders() {
   fs.stat(buildOptions.buildDir, function(err, out) {
     if (out) {
       fs.stat(buildOptions.buildDir + 'assets', function(err, out) { 
-        if (err) { copyAssets(); }
-        if (buildOptions.updateApi) { copyAssets(); }
+        if (err || buildOptions.updateApi) { copyAssets(); }
       });
     } else {
       if (!buildOptions.buildQuiet) console.log('NODe API: creating build folder');
