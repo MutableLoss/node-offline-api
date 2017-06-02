@@ -95,8 +95,10 @@ function checkFolders() {
       });
     } else {
       if (!buildOptions.buildQuiet) console.log('NODe API: creating build folder');
-      fs.mkdirSync(buildOptions.buildDir);
-      copyAssets();
+      fs.mkdir(buildOptions.buildDir, (err, out) => {
+        if(err && !buildOptions.buildQuiet) { console.log('NODe API: Build folder already exists'); }
+        copyAssets();
+      });
     }
   });
 }
