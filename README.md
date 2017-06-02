@@ -69,12 +69,6 @@ buildOptions.version = '4.4.0';
 createDocs();
 ```
 
-By default the build can be quite verbose when creating the documents. If you would prefer that the builds be silent, the buildQuiet option is offered allowing the build to complete silently, except when actual errors occur.
-
-```
-buildOptions.buildQuiet = true;
-```
-
 The way that NODe is written protects already generated documents by ignoring future requests when documents already exist. If you plan to update your documents many times with the same build name directory you will want to use the updateApi option. 
 
 ```
@@ -84,7 +78,7 @@ buildOptions.updateApi = true;
 Setting this option to _true_ tells NODe to create and overwrite the existing documents with each request. 
 
 
-### As a Script
+### As a Script (0.10.2 and earlier)
 
 You can also use NODe as your own script simply to pull and create Node.js documentation, but with less options. Even though this feature has less options, the options that do not exist can be easily scripted.
 

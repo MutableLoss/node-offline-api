@@ -27,25 +27,7 @@ var buildOptions = {
   buildDir: process.cwd(),
   buildVersion: process.version.slice(1),
   buildName: 'node-documents',
-  buildQuiet: false,
   updateApi: true
-}
-
-var options = process.argv.slice(2);
-
-// check for command line scripting options
-if(options[0] !== []) {
-  options.forEach(function(ops, index) {
-    if (ops.startsWith('-v')) {
-      buildOptions.buildVersion = options[index + 1];
-      flags[3] = '--node-version=' + version;
-    } else if (ops.startsWith('-f')) {
-      buildDir = options[index + 1];
-      if (buildDir.slice(-1) !== docEnd) { buildDir += docEnd; }
-      buildOptions.buildDir = buildDir + buildOptions.buildName;
-    }
-    if (index === options.length - 1) { checkOptions(); }
-  });
 }
 
 // Check for modular options
@@ -54,12 +36,11 @@ function convertFile(file) {
   count++;
   flags[2] = apiDir + file;
   var filename = file.slice(0,-3);
-  if (!buildOptions.buildQuiet) console.log('Creating doc ' + filename);
   var pathname = buildOptions.buildDir + filename + '.html';
   var fileStream = fs.createWriteStream(pathname, {flag: 'w'});
   var createFile = spawn('node', flags);
   createFile.stdout.pipe(fileStream);
-  createFile.on('error', (err) => console.error('Error writing: ', err));
+  createFile.on('error', (err) => console.error('NODe: Error writing: ', err));
 }
 
 // grab template file and assets
@@ -77,8 +58,7 @@ function checkFiles() {
 function copyAssets() {
   fsx.copy(apiAssets, buildOptions.buildDir + 'assets', function(err) {
     // Quiet this error since it will show if assets already exist
-    if (err && !buildOptions.buildQuiet) { return console.log('Error copying assets:', err); }
-    if (!buildOptions.buildQuiet) { console.log('NODe: asset copy success'); }
+    if (err) { return console.log('NODe: Error copying assets:', err); }
   });
   checkFiles();
 }
@@ -91,9 +71,7 @@ function checkFolders() {
         if (err || buildOptions.updateApi) { copyAssets(); }
       });
     } else {
-      if (!buildOptions.buildQuiet) console.log('NODe API: creating build folder');
       fs.mkdir(buildOptions.buildDir, (err, out) => {
-        if(err && !buildOptions.buildQuiet) { console.log('NODe API: Build folder already exists'); }
         copyAssets();
       });
     }
@@ -105,7 +83,6 @@ function checkOptions() {
   if(buildOptions.buildDir.slice(0,1)) { buildOptions.buildDir = buildOptions.buildDir.replace(/^~/, os.homedir); }
   if (buildOptions.buildDir.slice(-1) !== docEnd) { buildOptions.buildDir += docEnd; }
   buildOptions.buildDir += buildOptions.buildName + docEnd;
-  if (!buildOptions.buildQuiet) { console.log('NODe API: Building to Directory: %s', buildOptions.buildDir); }
   checkFolders();
 }
 
