@@ -43,7 +43,6 @@ if(options[0] !== []) {
       buildDir = options[index + 1];
       if (buildDir.slice(-1) !== docEnd) { buildDir += docEnd; }
       buildOptions.buildDir = buildDir + buildOptions.buildName;
-      if (!buildOptions.buildQuiet) console.log('Custom build dir: ', buildOptions.buildDir);
     }
     if (index === options.length - 1) { checkOptions(); }
   });
@@ -60,9 +59,6 @@ function convertFile(file) {
   var fileStream = fs.createWriteStream(pathname, {flag: 'w'});
   var createFile = spawn('node', flags);
   createFile.stdout.pipe(fileStream);
-  createFile.on('close', (code) => {
-    if (code !== 0 && !buildOptions.buildQuiet) { console.log('NODe API: process exited with code ' + code); }
-  });
   createFile.on('error', (err) => console.error('Error writing: ', err));
 }
 
@@ -77,15 +73,16 @@ function checkFiles() {
   });
 }
 
+// copy document assets
 function copyAssets() {
   fsx.copy(apiAssets, buildOptions.buildDir + 'assets', function(err) {
-    if (err) { return console.error('copy', err); }
+    if (err) { return console.error('Error copying assets:', err); }
     if (!buildOptions.buildQuiet) { console.log('NODe: asset copy success'); }
   });
   checkFiles();
 }
 
-// create document directory and copy assets
+// create document directories
 function checkFolders() {
   fs.stat(buildOptions.buildDir, function(err, out) {
     if (out) {
