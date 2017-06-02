@@ -76,7 +76,8 @@ function checkFiles() {
 // copy document assets
 function copyAssets() {
   fsx.copy(apiAssets, buildOptions.buildDir + 'assets', function(err) {
-    if (err) { return console.error('Error copying assets:', err); }
+    // Quiet this error since it will show if assets already exist
+    if (err && !buildOptions.buildQuiet) { return console.log('Error copying assets:', err); }
     if (!buildOptions.buildQuiet) { console.log('NODe: asset copy success'); }
   });
   checkFiles();
