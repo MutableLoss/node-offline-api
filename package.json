@@ -22,7 +22,7 @@
     "fs-extra": "3.0.1",
     "js-yaml": "3.8.3",
     "jsdoc": "3.4.3",
-    "marked": "0.3.6"
+    "marked": "0.3.9"
   },
   "devDependencies": {
     "chai": "3.5.0",
