@@ -8,6 +8,7 @@ branches:
 notifications:
   email: false
 node_js:
+  - '9'
   - '7'
   - '6'
   - '4'

@@ -1,18 +1,10 @@
-var createDocs = require('../app/index.js').createDocs;
-var buildOptions = require('../app/index.js').buildOptions;
+var createDocs = require('../app/index.js');
 
 // Test on OSX and Linux
-// buildOptions.buildDir = '~/'
+// createDocs('~/')
 
 // Test on Windows
 // '~' converts to home directory in Windows too
-// buildOptions.buildDir = '~\\My Documents'
+// createDocs('~\\My Documents')
 
-// Test version change
-buildOptions.buildVersion = '4.4.0';
-buildOptions.buildName = 'apidoc';
-
-// Use this to overwrite existing API documents
-// buildOptions.updateApi = true;
-
-createDocs();
+createDocs('./', 'api-docs', '9.2.1');
